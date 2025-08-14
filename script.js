@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkWinCondition() {
         if (!checkpoints.flag1 && checkCollision(playerPosition, flag1Position)) {
-            messageDisplay.textContent = '¡MUY BIEN! HAS LLEGADO A LA BANDERA 1. 🎉';
+            messageDisplay.textContent = '¡MUY BIEN! HAS LLEGADO A LA BANDERA 1. ';
             checkpoints.flag1 = true;
             resetCommands();
             updateBoard();
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playerPosition = { ...startPosition };
         createBoard();
         messageDisplay.textContent = 'JUEGO REINICIADO. ¡A PROGRAMAR! ';
-        instructionMessage.textContent = '¡BIENVENIDO! VE A LA BANDERA 1.';
+        instructionMessage.textContent = '¡BIENVENIDO! VE A LA BANDERA 1.(Rojo)';
     }
 
     commandButtons.forEach(button => {
