@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Algoritmos v4.0</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Juego de Algoritmos: La Ruta Perfecta</h1>
+    </header>
+    <main>
+        <div class="game-container">
+            <div id="game-board"></div>
+            <div class="controls-panel">
+                <h2 id="current-instruction"></h2>
+                <div class="command-buttons-container">
+                    <div class="command-buttons-row">
+                        <button data-command="arriba" class="arrow-button">⬆️</button>
+                    </div>
+                    <div class="command-buttons-row">
+                        <button data-command="izquierda" class="arrow-button">⬅️</button>
+                        <button data-command="abajo" class="arrow-button">⬇️</button>
+                        <button data-command="derecha" class="arrow-button">➡️</button>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button id="run-button">Ejecutar</button>
+                    <button id="reset-button">Reiniciar Juego</button>
+                </div>
+                <p id="message"></p>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>Presentación de Programación</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    width: 100%;
+    text-align: center;
+    padding: 1.5rem 0;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column; 
+    gap: 3rem;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+@media (min-width: 768px) {
+    .game-container {
+        flex-direction: row;
+    }
+}
+
+#game-board {
+    width: 400px;
+    height: 400px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    border: 2px solid #333;
+    background-color: #e0e0e0;
+    box-sizing: border-box;
+}
+
+.cell {
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#player, .flag, #target {
+    width: 80%;
+    height: 80%;
+    border-radius: 5px;
+}
+
+#player {
+    background-color: #2196F3;
+    transition: transform 0.5s ease-in-out;
+}
+
+.flag {
+    background-color: #e74c3c;
+}
+
+#flag2 {
+    background-color: #f39c12;
+}
+
+.flag.reached {
+    background-color: #9b59b6;
+}
+
+#target {
+    background-color: #4CAF50;
+}
+
+.controls-panel {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+#current-instruction {
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+}
+
+.command-buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.command-buttons-row {
+    display: flex;
+    justify-content: center;
+}
+
+.arrow-button {
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    margin: 0.2rem;
+    cursor: pointer;
+    background-color: #ddd;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.1s ease;
+}
+
+.arrow-button:active {
+    background-color: #bbb; /* Color más oscuro al presionar */
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+#run-button, #reset-button {
+    flex: 1;
+    padding: 0.75rem 0;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: white;
+}
+
+#run-button { background-color: #4CAF50; }
+#reset-button { background-color: #f44336; }
+
+#message {
+    font-weight: bold;
+    text-align: center;
+    margin-top: 1rem;
+}
