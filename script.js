@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             checkpoints.flag1 = true;
             resetCommands();
             updateBoard();
-            instructionMessage.textContent = 'AHORA, VE A LA BANDERA 2.';
+            instructionMessage.textContent = 'AHORA, VE A LA BANDERA 2.(Naranja)';
         } else if (checkpoints.flag1 && !checkpoints.flag2 && checkCollision(playerPosition, flag2Position)) {
             messageDisplay.textContent = '¡EXCELENTE! BANDERA 2 ALCANZADA. ';
             checkpoints.flag2 = true;
