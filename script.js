@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function runCommands() {
-        messageDisplay.textContent = 'Ejecutando...';
+        messageDisplay.textContent = 'EJECUTANDO...';
         
         let currentRow = playerPosition.row;
         let currentCol = playerPosition.col;
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (command === 'derecha') newCol++;
             
             if (newRow < 0 || newRow >= boardSize || newCol < 0 || newCol >= boardSize) {
-                messageDisplay.textContent = '¡Te saliste del tablero! Intenta de nuevo. 😞';
+                messageDisplay.textContent = '¡TE SALISTE DEL TABLERO! INTENTA DE NUEVO.';
                 resetGame();
                 return;
             }
@@ -98,23 +98,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkWinCondition() {
         if (!checkpoints.flag1 && checkCollision(playerPosition, flag1Position)) {
-            messageDisplay.textContent = '¡Muy bien! Has llegado a la Bandera 1(Roja). 🎉';
+            messageDisplay.textContent = '¡MUY BIEN! HAS LLEGADO A LA BANDERA 1. 🎉';
             checkpoints.flag1 = true;
             resetCommands();
             updateBoard();
-            instructionMessage.textContent = 'Ahora, ve a la Bandera 2 (naranja).';
+            instructionMessage.textContent = 'AHORA, VE A LA BANDERA 2.';
         } else if (checkpoints.flag1 && !checkpoints.flag2 && checkCollision(playerPosition, flag2Position)) {
-            messageDisplay.textContent = '¡Excelente! Bandera 2 alcanzada. 🏆';
+            messageDisplay.textContent = '¡EXCELENTE! BANDERA 2 ALCANZADA. ';
             checkpoints.flag2 = true;
             resetCommands();
             updateBoard();
-            instructionMessage.textContent = 'Avanza hacia la meta.';
+            instructionMessage.textContent = 'AVANZA HACIA LA META.';
         } else if (checkpoints.flag1 && checkpoints.flag2 && checkCollision(playerPosition, targetPosition)) {
-            messageDisplay.textContent = '¡Felicidades, has completado el desafío! 🥳';
+            messageDisplay.textContent = '¡FELICIDADES, HAS COMPLETADO EL DESAFÍO!';
             resetCommands();
-            instructionMessage.textContent = '¡Juego completado!';
+            instructionMessage.textContent = '¡JUEGO COMPLETADO!';
         } else {
-            messageDisplay.textContent = 'El algoritmo ha terminado y no has llegado al punto esperado. 😔';
+            messageDisplay.textContent = 'EL ALGORITMO HA TERMINADO Y NO HAS LLEGADO AL PUNTO ESPERADO. ';
         }
     }
 
@@ -127,8 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
         checkpoints = { flag1: false, flag2: false };
         playerPosition = { ...startPosition };
         createBoard();
-        messageDisplay.textContent = 'Juego reiniciado. ¡A programar! 💪';
-        instructionMessage.textContent = '¡Bienvenido! Ve a la Bandera 1 (Roja).';
+        messageDisplay.textContent = 'JUEGO REINICIADO. ¡A PROGRAMAR! ';
+        instructionMessage.textContent = '¡BIENVENIDO! VE A LA BANDERA 1.';
     }
 
     commandButtons.forEach(button => {
