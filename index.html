@@ -2,41 +2,374 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de Algoritmos Retro</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Guía al Robot 🤖</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1c2b3a 0%, #0a1118 100%);
+            color: #ecf0f1;
+            overflow: hidden;
+        }
+
+        .game-container {
+            text-align: center;
+            background: rgba(44, 62, 80, 0.7);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #3498db;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px #1f3244;
+        }
+
+        p {
+            margin: 5px 0 20px;
+            color: #bdc3c7;
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(5, 70px);
+            grid-template-rows: repeat(5, 70px);
+            gap: 8px;
+            margin: 20px auto;
+        }
+
+        .cell {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            background: #3b5064;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .robot {
+            animation: bounce 0.8s infinite ease-in-out;
+            transform-origin: bottom;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .goal {
+            background: #2ecc71;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+        
+        .obstacle {
+            background: #e74c3c;
+            transform: rotate(45deg);
+            color: #fff;
+            text-shadow: 1px 1px #000;
+        }
+
+        .commands-list {
+            min-height: 30px;
+            border-radius: 10px;
+            background: #2c3e50;
+            padding: 10px;
+            border: 1px solid #34495e;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 14px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s, background 0.3s;
+        }
+        button:hover {
+            background: #5dade2;
+            transform: scale(1.05);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #result, #commands {
+            margin: 10px 0;
+            font-weight: bold;
+            color: #ecf0f1;
+            text-shadow: 1px 1px #000;
+        }
+
+        #timer { color: #f1c40f; }
+        #score { color: #f39c12; }
+        #level-display { margin-top: 10px; font-weight: bold; color: #ff9800;}
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Juego de Algoritmos</h1>
-    </header>
-    <main>
-        <div class="game-container">
-            <div id="game-board"></div>
-            <div class="controls-panel">
-                <h2 id="current-instruction"></h2>
-                <div class="command-buttons-container">
-                    <div class="command-buttons-row">
-                        <button data-command="arriba" class="arrow-button">⬆️</button>
-                    </div>
-                    <div class="command-buttons-row">
-                        <button data-command="izquierda" class="arrow-button">⬅️</button>
-                        <button data-command="abajo" class="arrow-button">⬇️</button>
-                        <button data-command="derecha" class="arrow-button">➡️</button>
-                    </div>
-                </div>
-                <div class="action-buttons">
-                    <button id="run-button">Ejecutar</button>
-                    <button id="reset-button">Reiniciar</button>
-                </div>
-                <p id="message"></p>
-            </div>
+    <div class="game-container">
+        <h1>🚀 Guía al Robot 🤖</h1>
+        <p>Arma una secuencia de comandos para llevar al robot a la meta.</p>
+        
+        <div id="level-display">Nivel 1</div>
+        <div id="timer">⏱ Tiempo: 5:00</div>
+        <div id="score">⭐ Puntos: 0</div>
+
+        <div id="board"></div>
+
+        <div class="controls">
+            <button onclick="addCommand('U')">⬆️ Arriba</button>
+            <button onclick="addCommand('D')">⬇️ Abajo</button>
+            <button onclick="addCommand('L')">⬅️ Izquierda</button>
+            <button onclick="addCommand('R')">➡️ Derecha</button>
+            <button onclick="runCommands()">▶️ Ejecutar</button>
+            <button onclick="resetGame()">🔄 Reiniciar</button>
         </div>
-    </main>
-    <footer>
-        <p>Presentación de Programación</p>
-    </footer>
-    <script src="script.js"></script>
+
+        <p><b style="color:#ecf0f1">Secuencia:</b></p>
+        <div id="commands" class="commands-list"></div>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        const boardEl = document.getElementById("board");
+        const commandsEl = document.getElementById("commands");
+        const resultEl = document.getElementById("result");
+        const timerEl = document.getElementById("timer");
+        const scoreEl = document.getElementById("score");
+        const levelDisplayEl = document.getElementById("level-display");
+
+        let robot = { x: 0, y: 0 };
+        let goal = { x: 0, y: 0 };
+        let commands = [];
+        let score = 0;
+        let boardData = [];
+        const gridSize = 5;
+        let currentLevelIndex = 0;
+
+        let totalSeconds = 300;
+        let timerInterval;
+
+        const levels = [
+            {
+                board: [
+                    [0, 0, 0, 0, 0],
+                    [0, 1, 1, 1, 0],
+                    [0, 1, 0, 0, 0],
+                    [0, 1, 1, 1, 0],
+                    [0, 0, 0, 0, 0]
+                ],
+                start: { x: 0, y: 0 },
+                goal: { x: 4, y: 4 }
+            },
+            {
+                board: [
+                    [0, 0, 0, 0, 0],
+                    [1, 1, 0, 1, 1],
+                    [0, 0, 0, 0, 0],
+                    [1, 1, 0, 1, 1],
+                    [0, 0, 0, 0, 0]
+                ],
+                start: { x: 2, y: 0 },
+                goal: { x: 2, y: 4 }
+            },
+            {
+                board: [
+                    [1, 0, 1, 0, 1],
+                    [0, 0, 0, 0, 0],
+                    [1, 0, 1, 0, 1],
+                    [0, 0, 0, 0, 0],
+                    [1, 0, 1, 0, 1]
+                ],
+                start: { x: 1, y: 0 },
+                goal: { x: 3, y: 4 }
+            },
+            {
+                board: [
+                    [0, 0, 0, 0, 0],
+                    [0, 1, 1, 0, 0],
+                    [0, 0, 1, 1, 0],
+                    [0, 0, 0, 1, 0],
+                    [1, 1, 0, 0, 1]
+                ],
+                start: { x: 0, y: 4 },
+                goal: { x: 4, y: 0 }
+            }
+        ];
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            totalSeconds = 300;
+            timerInterval = setInterval(() => {
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    resultEl.textContent = "⏰ ¡Se acabó el tiempo!";
+                    return;
+                }
+                totalSeconds--;
+                let min = Math.floor(totalSeconds / 60);
+                let sec = totalSeconds % 60;
+                timerEl.textContent = `⏱ Tiempo: ${min}:${sec < 10 ? '0' + sec : sec}`;
+            }, 1000);
+        }
+
+        function setLevel(levelIndex) {
+            if (levelIndex >= levels.length) {
+                resultEl.textContent = "🏆 ¡Felicidades! Has completado todos los niveles.";
+                resultEl.style.color = '#ffd700';
+                clearInterval(timerInterval);
+                return false;
+            }
+
+            const selectedLevel = levels[levelIndex];
+            boardData = selectedLevel.board.map(row => [...row]);
+            robot.x = selectedLevel.start.x;
+            robot.y = selectedLevel.start.y;
+            goal.x = selectedLevel.goal.x;
+            goal.y = selectedLevel.goal.y;
+            levelDisplayEl.textContent = `Nivel ${levelIndex + 1}`;
+            return true;
+        }
+
+        function drawBoard() {
+            boardEl.innerHTML = "";
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    const cell = document.createElement("div");
+                    cell.className = "cell";
+                    if (boardData[y][x] === 1) {
+                        cell.classList.add("obstacle");
+                        cell.textContent = "❌";
+                    }
+                    if (x === goal.x && y === goal.y) {
+                        cell.classList.add("goal");
+                        cell.textContent = "🏁";
+                    }
+                    if (x === robot.x && y === robot.y) {
+                        cell.classList.add("robot");
+                        cell.textContent = "🤖";
+                    }
+                    boardEl.appendChild(cell);
+                }
+            }
+        }
+
+        function addCommand(cmd) {
+            commands.push(cmd);
+            commandsEl.textContent = commands.map(c =>
+                c === 'U' ? '⬆️' : c === 'D' ? '⬇️' : c === 'L' ? '⬅️' : '➡️'
+            ).join(" → ");
+        }
+
+        async function runCommands() {
+            let currentX = robot.x;
+            let currentY = robot.y;
+            let pathBlocked = false;
+
+            for (let cmd of commands) {
+                await new Promise(r => setTimeout(r, 300));
+
+                let nextX = currentX;
+                let nextY = currentY;
+
+                if (cmd === 'U' && currentY > 0) nextY--;
+                if (cmd === 'D' && currentY < gridSize - 1) nextY++;
+                if (cmd === 'L' && currentX > 0) nextX--;
+                if (cmd === 'R' && currentX < gridSize - 1) nextX++;
+
+                if (boardData[nextY] && boardData[nextY][nextX] === 1) {
+                    pathBlocked = true;
+                    break;
+                }
+                
+                currentX = nextX;
+                currentY = nextY;
+                
+                boardEl.querySelectorAll('.robot').forEach(cell => cell.classList.remove('robot'));
+                const newRobotCell = boardEl.children[currentY * gridSize + currentX];
+                newRobotCell.classList.add('robot');
+            }
+
+            robot.x = currentX;
+            robot.y = currentY;
+
+            await new Promise(r => setTimeout(r, 500));
+
+            if (pathBlocked) {
+                resultEl.textContent = "❌ ¡El robot chocó contra un obstáculo!";
+                resultEl.style.color = '#e74c3c';
+            } else if (robot.x === goal.x && robot.y === goal.y) {
+                resultEl.textContent = "🎉 ¡Ganaste! ¡Pasando al siguiente nivel!";
+                resultEl.style.color = '#2ecc71';
+                score += Math.max(200 - commands.length * 10, 50);
+                scoreEl.textContent = "⭐ Puntos: " + score;
+                commands = [];
+                commandsEl.textContent = "";
+
+                setTimeout(() => {
+                    currentLevelIndex++;
+                    if (setLevel(currentLevelIndex)) {
+                        drawBoard();
+                    }
+                }, 1500);
+
+            } else {
+                resultEl.textContent = "❌ El robot no llegó, prueba otra secuencia.";
+                resultEl.style.color = '#e67e22';
+            }
+        }
+
+        function resetGame() {
+            currentLevelIndex = 0;
+            score = 0;
+            scoreEl.textContent = "⭐ Puntos: 0";
+            commands = [];
+            commandsEl.textContent = "";
+            resultEl.textContent = "";
+            resultEl.style.color = '#ecf0f1';
+            setLevel(currentLevelIndex);
+            drawBoard();
+            startTimer();
+        }
+
+        resetGame();
+    </script>
 </body>
 </html>
